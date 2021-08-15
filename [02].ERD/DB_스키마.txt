@@ -1,0 +1,202 @@
+01. 과정[기초정보] 			tblProcess
+- 과정번호 (PK), 			processSeq
+- 과정명, 				processName
+- 과정개월수(5.5 /6/ 7개월 중 택1)	month
+- 캠퍼스 				campus
+- 난이도(상/중/하) 			level
+- 수강비 				price
+- 기관 평가 등급(A/B/C)		grade
+- 관련직종(IT, 디자인, 데이터 등..)	job 
+- 관련자격증 (정처기, 컬러...) 		capacity
+- 취업률  				employmentrate
+- 분류 (재직자, 취업자 과정), 		div
+
+
+
+02. 과목[기초정보] 	tblSubject
+  - 과목번호(PK), 	 	subjectSeq
+  - 과목명,		 	subjectName
+  - 공통과목여부(YES/NO),	 common
+  - 난이도(상/중/하), 	 	level
+  - 과목분류, 			div
+  - 선행학습필요여부,	 	priorLearn
+  
+●	과목수 최대 50개
+
+
+03. 과정별 과목 [기초정보] 	    tblProcessSub
+- 과정번호(FK),				processseq
+- 과목번호(FK) 				subjectseq
+  ---> 두개 묶어서 PK
+* 기초정보중 [과정명] 에있는 과정만 등록할 수 있다.
+* 기초정보중 [과목명] 에있는 과정만 등록할 수 있다.
+
+
+04. 강의실명[기초정보] 	tblClassRoom
+- 강의실번호 (PK), 		classseq
+- 강의실명(1,2,3,4,5,6), 	classname
+- 최대인원(26,30),		classmax
+- 와이파이 이름, 		wifiname
+- 와이파이 비번, 		wifipw
+- PC 운영체제, 			os
+        
+
+05 강의실 좌석 tblClassSeat
+강의실좌석번호(ex1001..6030)(PK), 	seq
+강의실번호(FK), 			classRoomSeq
+PC고장여부(YES/NO), 		pctrouble
+      
+06 고장PC 			tblPcTrouble
+ -  고장PC번호(PK), 	    	seq
+ - 강의실 좌석번호(FK), 	 ClassSeatSeq
+ - 고장원인 		    	cause
+
+(= 고장/정상 PC를 수정할때는 [00 강의실 좌석] 테이블을 수정해야하고 [00고장PC] 테이블의 리스트에서 사라진다. 
+ = [00 고장PC] 에서 고장원인 내용을 수정하고 싶으면 [00고장PC] 테이블을 수정한다.)
+
+
+07. 교재명[기초정보] TblBook
+- 교재번호 (PK)  seq
+- 교재명	name
+- 출판사	publisher
+- 저자		author
+- 페이지수	page
+- 발행일	date
+- 가격		price
+   
+08. 교사정보 tblTeacher
+- 교사번호 (PK),		seq
+-  교사명, 			name
+- 주민번호, 			ssn
+- 이메일, 			email
+- 전화번호, 			tel
+- 주소, 				address
+- 경력, 				career
+- 출신학교, 			school
+- 전공, 				major
+- 입사일, 			enterdate
+- 강사분류(전임강사/강사)	div
+    
+* 교사 계정은 현시점 6명, 현시점 대기 인원 4명으로 제한한다.(최대 10명)
+
+09. 교사 강의 가능 과목	tblTeacherSub
+-교사번호(PK), 	teacherseq
+-과목번호(PK)		subjectseq
+  ---> 두개 묶어서 PK
+
+10. 개설 과정 tblOpenProcess
+- 개설과정번호 (PK) , 			seq
+-  과정번호(FK), 			processseq
+-  강의실번호(FK), 			classseq
+- 과정 시작 날짜(YYYY-MM-DD),	startDate
+-  과정 종료 날짜(YYYY-MM-DD)  	endDate
+
+11. 개설 과목	tblOpenSubject
+-  개설과목번호(PK), 			seq
+- 과목번호(FK), 			subjectSeq
+- 개설과정번호(FK), 			openProcessSeq
+- 교사번호(FK), 			teacherSeq
+- 과목 시작 날짜(YYYY-MM-DD), 	startDate
+- 과목 종료 날짜(YYYY-MM-DD)	endDate
+( 과목명은 중복값이 있겠지만  개설과목번호는 유일하다.)
+
+12. 교육생 개인정보	tblStudent
+ - 교육생 번호(PK),	seq
+- 교육생 이름,		name\
+- 주민번호,		ssn
+- 이메일, 		email
+- 전화번호, 		tel
+- 주소, 			address
+- 출신학교, 		school
+- 전공, 			major
+- 등록일(YY-MM-DD)	enterdate
+
+13. 교육생 수강정보		tblregStudent
+- 교육생 번호(FK), 		studentseq
+- 개설과정번호(FK), 		openSubjectseq
+- 수료날짜(YY-MM-DD), 	finishdate
+- 중도탈락날짜(YY-MM-DD),	dropDate
+- 전공여부(전공/비전공) 	isMajor
+   교육생 번호(FK) + 개설과정번호(FK) -> 두개묶어서 PK
+●	수료/중도탈락 여부, 수료/중도탈락 날짜 모두 (default:Null)
+
+
+14. 과목별 배점 		tblPoint
+- 배점번호 (PK) 		Seq
+- 개설과목번호(FK)		openSubjectSeq
+- 출결, 				Attend
+- 필기, 				Write
+- 실기, 				perform
+- 과제				task
+개설과목은 교사가 속한 개설과목만 가져올 수 있다.
+
+15. 교육생 시험 점수 	tblScore
+- 교육생 번호(FK), 	Seq
+- 개설과목번호(FK), 	openSubjectSeq
+         ---> 두개 묶어서 PK
+- 출결, 			Attend
+- 필기,			Write
+- 실기, 			perform
+- 과제			task
+ 
+   
+16. 프로젝트 관리[교사]	tblProject
+- 프로젝트 번호(PK), 		Seq
+- 개설과목번호(FK),		openSubjectSeq
+- 프로젝트주제, 		title
+- 프로젝트 설명		summary
+- 시작날짜, 			startDate
+- 종료날짜, 			endDate
+- 난이도(상,중,하),  		level
+- 제출방법(발표, 드라이브업로드, 메일제출...)  submit
+
+17. 과목별 조 분배		tblTeam
+- 조번호(PK)			Seq
+- 개설과목번호(FK)		openSubjectSeq
+- 조장인 교육생번호id		leaderSeq        (이거FK맞쥬…?맞아요~)
+  
+
+18. 교육생 조 분배[교사]	tblTeamDiv
+- 조번호(FK)			teamSeq
+- 교육생번호(FK)		studentSeq
+  ---> 두개 묶어서 PK
+(위에서 지정한 조장들은 이미 조편생이 된채로 조분배 진행)
+
+19. 출결 관리			tblAttend
+- 출결 번호(PK), 		seq
+- 개설과정번호(FK), 		openProcessSeq
+- 교육생 번호(FK), 		studentSeq
+- 입실시간, 			inTime
+- 퇴실시간			outTime
+
+20. 출결상태			tblAttendState
+-출결상태번호  		seq
+-출결번호(FK),			attendSeq
+ 상태종류(외출/병가/기타),	state
+ 사유				cause
+21. 조별 프로젝트 tblTeamProject
+- 조별 고유번호(PK), 		  seq
+- 프로젝트 번호(FK),  		  projectseq
+- 조번호(FK), 			  team_seq
+- 프로젝트제출명,		  name
+- 프로젝트내용,		 	 content
+- 프로젝트진행상황(1~5단계), progress
+- 제출여부 			  isSubmit
+
+
+22. 시험관리 tblExam
+- 시험 고유번호(PK),	seq
+- 개설과목번호(FK) , 	openSubjectSeq
+- 시험 등록일, 		regDate
+- 필기시험 날짜, 	writeDate
+- 실기시험 날짜, 	performDate
+ 
+
+23. 시험문제 tblQuestion
+- 문제 고유번호(PK), 	seq
+- 시험고유번호(FK), 	examSeq
+- 문제, 			question
+- 답, 			answer
+- 유형(필기/실기), 	type
+- 점수 			score
+
