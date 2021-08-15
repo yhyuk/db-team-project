@@ -37,5 +37,5 @@ ___
 ___
 
 ## PPT
-- PPT(https://github.com/yhyuk/db-team-project/blob/main/%5B06%5D.PPT/Oracle%20Project.pptx)
+- [PPT](https://github.com/yhyuk/db-team-project/blob/main/%5B06%5D.PPT/Oracle%20Project.pptx)
 ___
